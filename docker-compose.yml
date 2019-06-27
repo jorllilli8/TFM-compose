@@ -1,0 +1,26 @@
+   version: '2'
+   services:
+         hadoop:
+            build: ./hadoop_machine/
+            links:
+             - db
+            environment:
+             - URL_DB=tcp://db:3306
+            volumes:
+             - "/var/run/docker.sock:/var/run/docker.sock"
+         server:
+            build: ./server_machine/
+            ports:
+             - 8888:5000
+            links:
+             - db
+            environment:
+             - URL_DB=tcp://db:3306
+            volumes:
+             - "/var/run/docker.sock:/var/run/docker.sock"
+         db:
+            build: ./mysql_machine/
+            ports:
+             - 8008:3306  
+            volumes:
+             - "/var/run/docker.sock:/var/run/docker.sock"
